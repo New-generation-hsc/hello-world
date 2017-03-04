@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define SIZE 10
+#define SIZE 30
 #define BOOL int
 
 struct node
@@ -54,9 +54,10 @@ struct node* search(struct node* head, char *username){
 	return NULL; // search fail
 }
 
+
 struct node* update(struct node* head, char *username){
 
-	char password[10];
+	char password[SIZE];
 	struct node *temp = head;
 	while(temp!=NULL)
 	{
@@ -65,11 +66,10 @@ struct node* update(struct node* head, char *username){
 			printf("please enter your new password: ");
 			scanf("%s", password);
 			strcpy(temp->password, password);
-			printf("%s\n", temp->password);
-			break;
 		}
 		temp = temp->next;
 	}
+
 
 	return head;
 }
@@ -104,6 +104,19 @@ struct node* destroy(struct node *head, char *username){
 	return head;
 }
 
+
+struct node* test(struct node* head){
+
+	char username[SIZE];
+	char password[SIZE];
+	printf("Enter your name: ");
+	scanf("%s", username);
+	printf("Enter your password: ");
+	scanf("%s", password);
+	head = create(head, username, password);
+	return head;
+}
+
 void display(struct node *head){
 
 	struct node *temp = head;
@@ -114,26 +127,29 @@ void display(struct node *head){
 	
 }
 
-struct node* test(struct node* head){
-
-	char username[10];
-	char password[10];
-	printf("Enter your name: ");
-	scanf("%s", username);
-	printf("Enter your password: ");
-	scanf("%s", password);
-	head = create(head, username, password);
-	return head;
-}
-
 int main()
 {
 	struct node *head = NULL;
 	head = test(head);
 	head = test(head);
+	head = test(head);
+	head = test(head);
+
+	display(head);
+	printf("---------------------------\n");
+
+	struct node* result = search(head, "yang");
+	printf("username: %s\npassword: %s\n", result->username, result->password);
+	printf("---------------------------\n");
+
 
 	head = update(head, "huang");
 	display(head);
 	printf("---------------------------\n");
+
+
+	head = destroy(head, "yang");
+	display(head);
+
 	return 0;
 }
