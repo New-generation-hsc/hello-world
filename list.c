@@ -127,13 +127,45 @@ void display(struct node *head){
 	
 }
 
+void output(struct node *head){
+
+	FILE *fp;
+	fp = fopen("input.txt", "w");
+	if(fp == NULL){
+		printf("Cannot open file. Exit\n");
+		exit(1);
+	}
+	struct node *temp = head;
+	while(temp!= NULL){
+		fprintf(fp, "%s %s\n", temp->username, temp->password);
+		temp = temp->next;
+	}
+	fclose(fp);
+}
+
+struct node* input(struct node *head){
+
+	char username[30];
+	char password[30];
+	FILE *fp;
+	fp = fopen("input.txt", "r");
+	if(fp == NULL){
+		printf("Cannot open file. Exit\n");
+		exit(1);
+	}
+
+	while(!feof(fp)){
+		fscanf(fp, "%s %s", username, password);
+		head = create(head, username, password);
+	}
+	fclose(fp);
+	return head;
+}
+
 int main()
 {
 	struct node *head = NULL;
-	head = test(head);
-	head = test(head);
-	head = test(head);
-	head = test(head);
+	head = input(head);
 
 	display(head);
 	printf("---------------------------\n");
@@ -150,6 +182,8 @@ int main()
 
 	head = destroy(head, "yang");
 	display(head);
+
+	output(head);
 
 	return 0;
 }
