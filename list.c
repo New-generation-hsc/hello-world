@@ -162,27 +162,93 @@ struct node* input(struct node *head){
 	return head;
 }
 
+void login(struct node* head){
+
+	char username[30];
+	char password[30];
+	int flag = 0; // judge wether login successfully
+	int exist = 0; // juge wether username exist
+	struct node* temp = head;
+	while(flag != 1){
+		exist = 0;
+		printf("Please enter your username: ");
+		scanf("%s", username);
+		printf("Please enter your password: ");
+		scanf("%s", password);
+		while(temp != NULL) {
+		    if(strcmp(temp->username, username) == 0){
+		    	exist = 1;
+		    	if(strcmp(temp->password, password) == 0){
+		    		printf("%s login successfully\n", username);
+		    		flag = 1;
+		    		break;
+		    	}
+		    	else
+		    		printf("password is not correct.\n");
+		    }
+		    else
+		    	exist = 0;
+		    temp = temp->next;
+		}
+		if(exist == 0)
+			printf("your username is not exist.\n");
+	}
+
+}
+
+struct node* Register(struct node* head){
+
+	char username[30];
+	char password[30];
+	struct node* temp = head;
+
+	int flag = 0; //judge wether register successfully
+	int repeat = 0; // judget wether username repeat
+	while(flag != 1){
+		repeat = 0;
+		printf("Please enter your username: ");
+		scanf("%s", username);
+		printf("Please enter your password: ");
+		scanf("%s", password);
+		while(temp != NULL) {
+		    if(strcmp(temp->username, username) == 0){
+		    	printf("username can't repeat.\n");
+		    	repeat = 1;
+		    }
+		    temp = temp->next;
+		}
+		if(repeat == 0){
+			head = create(head, username, password);
+			printf("Congratulation. %s  successfully register.\n", username);
+			flag = 1;
+		}
+
+	}
+	return head;
+}
+
 int main()
 {
 	struct node *head = NULL;
+	int choice;
 	head = input(head);
 
+	printf("\t\t****************************************\n");
+	printf("\t\t*           1 login                    *\n");
+	printf("\t\t*           2 register                 *\n");
+	printf("\t\t****************************************\n");
+
+	printf("Please enter your choice: ");
+	scanf("%d", &choice);
+	switch(choice){
+		case 1: login(head);
+		break;
+		case 2: head = Register(head);
+		break;
+		default:
+		break;
+	}
 	display(head);
-	printf("---------------------------\n");
-
-	struct node* result = search(head, "yang");
-	printf("username: %s\npassword: %s\n", result->username, result->password);
-	printf("---------------------------\n");
-
-
-	head = update(head, "huang");
-	display(head);
-	printf("---------------------------\n");
-
-
-	head = destroy(head, "yang");
-	display(head);
-
 	output(head);
 
 	return 0;
